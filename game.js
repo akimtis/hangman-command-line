@@ -1,7 +1,11 @@
+//Prompt user to enter a letter
+//Decide if letter is in word and display if it is.Otherwise console log not in word
+//continually update guesses left until it equals zero
+
 var inquirer = require('inquirer'); //installed
+var prompt = require('prompt'); //installed
 var letter = require('./letter.js');
 var word = require('./word.js');
-var guessesLeft = 15;
 
 
 // First welcome them to our Node Hangman App in the console
@@ -67,36 +71,82 @@ var Word = function(wrd){
     };
 }
 
+//starting the game
+prompt.start();
 
-// Show them the empty word with underscores
-var Game = function(){
-  this.wordOptions = ['Oak','Maple','Sycamore', 'Cedar', 'Spruce', 'Fur'];
+var Game = {
+  wordList: ['Oak','Maple','Sycamore', 'Cedar', 'Spruce', 'Fur'],
+  guessesLeft : 15,
+  currentWrd : null,
 
-  this.randomWord = this.wordOptions[ Math.floor(Math.random() * this.wordOptions.length)];
-  this.currentWord = new Word(this.randomWord);
+  startGame : function(wrd){
+    var randomWord = this.wordList[Math.floor(Math.random() * this.wordList.length)];
+    console.log(randomWord); // Comment out after testing
+    this.currentWrd = new Word(randomWord);
+    this.currentWrd.getLets();
+    this.keepPrompting(); 
+  },
+
+keepPrompting: function() {
+    var self = this;
+    prompt.get(["guessLetter"], function(err, result) {
+      console.log("The Letter or space you guessed is : "+result.guessLetter);
+      var findHowManyOfUserGuess = self.currentWrd.checkIfLetterFound(result.guessLetter);
+
+      console.log("Guess"+findHowManyOfUserGuess);
+      
+      if(findHowManyOfUserGuess === 0) {
+        console.log("Your Guesses Wrong~!");
+        self.guessesRemaining -= 1;        
+      } else {
+        console.log("You guessed right!");
+        if (self.currentWrd.didWeFindTheWord()) {
+          console.log("You Won!!!");
+          return 1;
+        }else {
+          console.log("Guesses remaining:"+ self.guessesRemaining);
+          console.log(self.currentWrd.wordRender());
+          if (self.guessesRemaining > 0 && self.currentWrd.found === false){
+            self.keepPrompting();
+          } else {
+            if (self.guessesRemaining === 0){
+              console.log("Game Over Bro"); 
+              console.log("The word you were guessing was:"+self.randomWord);
+            }else {
+              console.log(self.currentWrd.wordRender());
+            }
+          }
+        }
+      }
+    });
+  }
 }
-  var hangMan = new Game();
+Game.startGame();
+// Show them the empty word with underscores
+// var wordGenerator = function(){
+//   this.wordList = ['Oak','Maple','Sycamore', 'Cedar', 'Spruce', 'Fur'];
+
+//   this.randomWord = this.wordList[ Math.floor(Math.random() * this.wordList.length)];
+//   this.generatedWord = new Word(this.randomWord);
+// }
+//   var game = new wordGenerator();
   // console.log(hangMan);
 
 
-//starting the game
- prompt.start();
 
 
 // Direct them to guess a letter
-inquirer.prompt([
-    {type: "input",
-    name: "letterChoice",
-    message: "What letter do you guess?"},
-  ]).then(function(data){
-    console.log("data", data)
-    guess = new Letter(data.letterChoice);
-    console.log(guess);
-  });
+// inquirer.prompt([
+//     {type: "input",
+//     name: "letterChoice",
+//     message: "What letter do you guess?"},
+//   ]).then(function(data){
+//     console.log("data", data)
+//     guess = new Letter(data.letterChoice);
+//     console.log(guess);
+//   });
 
-//Prompt user to enter a letter
-//Decide if letter is in word and display if it is.Otherwise console log not in word
-//continually update guesses left until it equals zero
+
 // console.log("Guesses Left: " + guessesLeft)
 
 
