@@ -10,7 +10,7 @@ var Word = function(wrd){
             this.lets.push(new Letter(this.word[i]));
         }
     };
-    
+
     //found the current word
     this.didWeFindTheWord = function() {
         //sets this.found in the word object to true or false if all letter objects have a true value in their appear property
@@ -25,7 +25,7 @@ var Word = function(wrd){
         var whatToReturn = 0;
 
         for(var i = 0; i < this.lets.length; i++) {
-            if (this.lets[i].charac == guessLetter){
+            if (this.lets.charac == guessLetter){
                 this.lets[i].appear = true;
                 whatToReturn++;
             }
@@ -35,7 +35,7 @@ var Word = function(wrd){
     };
 
     this.wordRender = function() {
-        var str = '';
+        var str = ' _  _  _  _  _  _  _ ';
 
         for(var i=0; i < this.lets.length; i++){
             str += this.lets[i].letterRender();
