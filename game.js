@@ -8,11 +8,6 @@ var letter = require('./letter.js');
 var word = require('./word.js');
 var confirm = require('inquirer-confirm');//installed
 
-
-// First welcome them to our Node Hangman App in the console
-console.log("Welcome to Tree Name Hangman")
-console.log("Guess a word. All words are a type of tree. Start guessing letters")
-
 function Letter(letter){
     this.letter = letter;
     this.found = false;
@@ -21,7 +16,6 @@ function Letter(letter){
         else return ' _ ';
     }
 }
-
 
 function Word(word){
     this.word = word;
@@ -55,6 +49,9 @@ function Word(word){
     }
 }
 
+// First welcome them to our Node Hangman App in the console
+console.log("Welcome to Tree Name Hangman")
+console.log("Guess a word. All words are a type of tree. Start guessing letters")
 
 
 var words = ['oak','maple','sycamore', 'cedar', 'spruce', 'fur'];
@@ -77,15 +74,14 @@ function askLetter(){
     ]).then(function(data){
         if (data.guess != 'no') {
             wordObject.updateLetter(data.guess);
-            guessesLeft--;
+            this.guessesLeft--;
             console.log (guessesLeft);
             console.log(wordObject.display());
             askLetter();
-        }if (guessesLeft=0){
+        }if (data.guess = 'no' OR this.guessesLeft = 0){
           confirm("Game Over. Would you like to play again?")
           .then (function confirmed(){
             generateLetter();
-
 
           });
         }

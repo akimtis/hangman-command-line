@@ -1,5 +1,5 @@
 
-var Letter = require('./Letter.js');
+var Letter = require('./letter.js');
 
 function Word(word){
     this.word = word;
@@ -33,7 +33,7 @@ function Word(word){
     }
 }
 
-module.exports = Word;
+module.exports = {Word};
 
 
 
