@@ -25,7 +25,7 @@ var Word = function(wrd){
         var whatToReturn = 0;
 
         for(var i = 0; i < this.lets.length; i++) {
-            if (this.lets.charac == guessLetter){
+            if (this.lets[i].charac == guessLetter){
                 this.lets[i].appear = true;
                 whatToReturn++;
             }
@@ -35,7 +35,7 @@ var Word = function(wrd){
     };
 
     this.wordRender = function() {
-        var str = ' _  _  _  _  _  _  _ ';
+        var str = '';
 
         for(var i=0; i < this.lets.length; i++){
             str += this.lets[i].letterRender();

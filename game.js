@@ -1,35 +1,61 @@
 var inquirer = require('inquirer'); //installed
-var letter = require('./letter.js');
-var word = require('./word.js');
-
+var Letter = require('./letter.js');
+var Word = require('./word.js');
+var wordsArray = ['Hangman', "Lebron James", "mug", "stove", "home", "coding", "Pavan Cat"]
+var strikesMax = 5;
+var strikesCount = 0;
 // First welcome them to our Node Hangman App in the console
 console.log("Welcome to Node Hangman")
 
 // Show them the empty word with underscores
+var currentWord = new Word(wordsArray[0]);
+currentWord.getLets();
+currentWord.found;
+
+console.log("Here is your word....")
+console.log(currentWord.wordRender())
+
+
+// Render the empty word to guess
+//  _ _ _ _ _ _ _
 
 // Direct them via category to guess a letter
 console.log("Please guess the word. Start guessing letters")
 
-//Prompt user to enter a letter
+// while (strikesCount < 5) {
+// //
+// }
 
-// var guesses;
+var guesses;
 
+var gameRun = function(){
+  // console.log("running");
 
-// word("Hangman")
-
-//guess generator
   inquirer.prompt([
     {type: "input",
     name: "letterChoice",
     message: "What letter do you guess?"},
   ]).then(function(data){
-    console.log("data", data)
-    guesses = new letter(data.letterChoice);
-    console.log(guesses);
-  });
+    // console.log("data", data);
+      guessedLetter = new Letter(data.letterChoice);
+      // console.log(guessedLetter);
+      currentWord.checkIfLetterFound(guessedLetter.charac);
+      currentWord.didWeFindTheWord();
+      console.log(currentWord.wordRender());
 
+      if(currentWord.found) {
+        console.log("You Won! The word was ... "+ currentWord.word  );
 
-// function guesses(){
-//   newWord
-//
-// }
+      } else{
+        console.log("running again")
+        // gameRun();
+      }
+  }
+)};
+//Prompt user to enter a letter
+gameRun();
+//Now check user input for correct guess
+// use checkIfLetterFound
+
+//Did they find the word?
+//use didWeFindTheWord
