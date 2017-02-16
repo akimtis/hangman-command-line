@@ -9,15 +9,19 @@ console.log("Welcome to Node Hangman")
 
 // Show them the empty word with underscores
 var currentWord = new Word(wordsArray[0]);
+// console.log(currentWord)
 currentWord.getLets();
+
+// console.log(" letters" +currentWord.lets)
 currentWord.found;
+// console.log("found" + currentWord.found)
 
 console.log("Here is your word....")
-console.log(currentWord.wordRender())
 
 
 // Render the empty word to guess
 //  _ _ _ _ _ _ _
+console.log(currentWord.wordRender())
 
 // Direct them via category to guess a letter
 console.log("Please guess the word. Start guessing letters")
@@ -38,7 +42,7 @@ var gameRun = function(){
   ]).then(function(data){
     // console.log("data", data);
       guessedLetter = new Letter(data.letterChoice);
-      // console.log(guessedLetter);
+      console.log(guessedLetter);
       currentWord.checkIfLetterFound(guessedLetter.charac);
       currentWord.didWeFindTheWord();
       console.log(currentWord.wordRender());
@@ -46,9 +50,9 @@ var gameRun = function(){
       if(currentWord.found) {
         console.log("You Won! The word was ... "+ currentWord.word  );
 
-      } else{
-        console.log("running again")
-        // gameRun();
+      } else {
+        console.log("Word not found..keep going")
+        gameRun();
       }
   }
 )};
