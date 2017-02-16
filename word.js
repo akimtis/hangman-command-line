@@ -1,8 +1,9 @@
 
 var Letter = require('./letter.js');
 
-function Word(word){
+var Word = function (word){
     this.word = word;
+    this.found = false;
     this.letters = [];
     this.makeAndPushLettersIntoWord = function(){
         for (var i=0; i< this.word.length; i++){
@@ -28,12 +29,34 @@ function Word(word){
 
         //one way
         for (var i=0; i<this.letters.length; i++){
-            if (this.letters[i].letter == guess) this.letters[i].found = true;
+            if (this.letters[i].letter == guess) 
+                this.letters[i].found = true;
         }
+    }
+
+    //helper function to check if entire word is found
+    function foundEveryLetter(element, index, array) { 
+      return element.found == true; 
+    } 
+
+    this.foundWord = function(){
+        this.found = this.letters.every(foundEveryLetter);
+
+        return this.found;
+
+
+        // for (var i=0; i<this.letters.length; i++){
+        //     if (this.letters[i].found !== true){
+        //         return this.found;
+        //     } else {
+        //         return this.found =true
+        //     }
+
+        // }
     }
 }
 
-module.exports = {Word};
+module.exports = Word;
 
 
 

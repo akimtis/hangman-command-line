@@ -5,53 +5,14 @@
 var inquirer = require('inquirer'); //installed
 var prompt = require('prompt'); //installed
 var letter = require('./letter.js');
-var word = require('./word.js');
+var Word = require('./word.js');
 var confirm = require('inquirer-confirm');//installed
 
-function Letter(letter){
-    this.letter = letter;
-    this.found = false;
-    this.display = function(){
-        if (this.found) return " " + this.letter + " ";
-        else return ' _ ';
-    }
-}
 
-function Word(word){
-    this.word = word;
-    this.letters = [];
-    this.makeAndPushLettersIntoWord = function(){
-        for (var i=0; i< this.word.length; i++){
-            var lett = new Letter(this.word[i]);
-            this.letters.push(lett);
-        }
-    },
-    this.display = function(){
-        var str = "";
-        for (var i=0; i < this.letters.length; i++){
-            str = str + this.letters[i].display();
-        }
-
-        return str;
-    }
-    this.updateLetter = function(guess){
-        //check all of the letter objects and see if the guess matches
-        //if it does I update that letter's found to true
-
-        //another way
-        // var index = this.word.indexOf(guess);
-        // if (index > -1) this.letters[index].found = true;
-
-        //one way
-        for (var i=0; i<this.letters.length; i++){
-            if (this.letters[i].letter == guess) this.letters[i].found = true;
-        }
-    }
-}
 
 // First welcome them to our Node Hangman App in the console
 console.log("Welcome to Tree Name Hangman")
-console.log("Guess a word. All words are a type of tree. Start guessing letters")
+console.log("All words are a type of tree. Start guessing letters")
 
 
 var words = ['oak','maple','sycamore', 'cedar', 'spruce', 'fur'];
@@ -72,18 +33,32 @@ function askLetter(){
     name: "guess",
     message: "What letter do you guess? If you are done then say no."},
     ]).then(function(data){
-        if (data.guess != 'no') {
-            wordObject.updateLetter(data.guess);
-            this.guessesLeft--;
-            console.log (guessesLeft);
-            console.log(wordObject.display());
-            askLetter();
-        }if (data.guess = 'no' OR this.guessesLeft = 0){
-          confirm("Game Over. Would you like to play again?")
-          .then (function confirmed(){
-            generateLetter();
 
-          });
+        wordObject.updateLetter(data.guess);
+        guessesLeft--;
+        console.log ("Guesses Left: " + guessesLeft);
+        console.log(wordObject.display());
+
+        wordObject.foundWord();
+        console.log("wordObject.found" + wordObject.found);
+
+
+        if (wordObject.found == false) {
+            askLetter();
+
+        } else if (wordObject.found === true){
+            confirm("You Win! Would you like to play again?")
+            .then (function confirmed(){
+                askLetter();
+            }, function cancelled(){
+                console.log('Game Ended');})
+        } else if (guessesLeft === 0){
+            confirm("You Lose! Would you like to play again?")
+            .then (function confirmed(){
+                askLetter();
+            }, function cancelled(){
+                console.log('Game Ended');
+        });
         }
 
     });

@@ -1,4 +1,4 @@
-function Letter(letter){
+var Letter = function (letter){
     this.letter = letter;
     this.found = false;
     this.display = function(){
@@ -7,7 +7,7 @@ function Letter(letter){
     }
 }
 
-module.exports = {Letter};
+module.exports = Letter;
 
 
 
